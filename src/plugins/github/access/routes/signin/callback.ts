@@ -1,14 +1,12 @@
 // deno-lint-ignore-file no-explicit-any
-import { FreshContext, Handlers } from "$fresh/server.ts";
-import { loadMainOctokit } from "../../../../../services/github/octokit/load.ts";
-import { EaCSourceConnectionDetails } from "../../../../../eac/modules/sources/EaCSourceConnectionDetails.ts";
-import { UserOAuthConnection } from "../../../../../oauth/UserOAuthConnection.ts";
-import { EverythingAsCodeState } from "../../../../../eac/EverythingAsCodeState.ts";
-import { waitForStatus } from "../../../../../utils/eac/waitForStatus.ts";
-import { OAuthHelpers } from "@fathym/common";
-import { EaCServiceClient } from "../../../../../eac/client/EaCServiceClient.ts";
-import { EverythingAsCode } from "../../../../../eac/EverythingAsCode.ts";
-import { EverythingAsCodeSources } from "../../../../../eac/modules/sources/EverythingAsCodeSources.ts";
+import {
+  EaCSourceConnectionDetails,
+  FreshContext,
+  Handlers,
+  loadMainOctokit,
+  OAuthHelpers,
+  UserOAuthConnection,
+} from "../../../../../src.deps.ts";
 import { GitHubAccessPluginState } from "../../GitHubAccessPluginState.ts";
 
 export function establishSigninCallbackRoute<
@@ -16,7 +14,10 @@ export function establishSigninCallbackRoute<
 >(
   oAuthHandlers: OAuthHelpers,
   denoKv: Deno.Kv,
-  loadEaCSvc: (ctx: FreshContext<TState>) => Promise<EaCServiceClient>,
+  processSrcConnDetails: (
+    ctx: FreshContext<TState>,
+    srcConnDetails: EaCSourceConnectionDetails,
+  ) => Promise<void>,
 ) {
   const handler: Handlers<any, TState> = {
     async GET(req, ctx) {
@@ -98,26 +99,7 @@ export function establishSigninCallbackRoute<
 
       srcConnDetails.Token = accessToken;
 
-      const eacSvc = await loadEaCSvc(ctx);
-
-      const commitResp = await eacSvc.Commit(
-        {
-          EnterpriseLookup: ctx.state.EaC!.EnterpriseLookup!,
-          SourceConnections: {
-            [srcConnLookup]: {
-              Details: srcConnDetails,
-              GitHubAppLookup: Deno.env.get("GITHUB_APP_ID"),
-            },
-          },
-        },
-        60,
-      );
-
-      await waitForStatus(
-        eacSvc,
-        commitResp.EnterpriseLookup,
-        commitResp.CommitID,
-      );
+      await processSrcConnDetails(ctx, srcConnDetails);
 
       return response;
     },

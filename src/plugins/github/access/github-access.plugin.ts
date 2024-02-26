@@ -1,5 +1,9 @@
-import { FreshContext, OAuthHelpers, Plugin } from "../../../src.deps.ts";
-import { EaCServiceClient } from "../../../eac/client/EaCServiceClient.ts";
+import {
+  EaCSourceConnectionDetails,
+  FreshContext,
+  OAuthHelpers,
+  Plugin,
+} from "../../../src.deps.ts";
 import { GitHubAccessPluginState } from "./GitHubAccessPluginState.ts";
 import { establishSigninCallbackRoute } from "./routes/signin/callback.ts";
 import { establishSigninRoute } from "./routes/signin/index.ts";
@@ -10,7 +14,10 @@ export type GitHubAccessPluginConfig<TState extends GitHubAccessPluginState> = {
 
   Handlers: OAuthHelpers;
 
-  LoadEaCSvc: (ctx: FreshContext<TState>) => Promise<EaCServiceClient>;
+  ProcessSrcConnDetails: (
+    ctx: FreshContext<TState>,
+    srcConnDetails: EaCSourceConnectionDetails,
+  ) => Promise<void>;
 
   RootPath?: string;
 };
@@ -25,7 +32,7 @@ export function gitHubAccessPlugin<TState extends GitHubAccessPluginState>(
   const signinCallbackRoute = establishSigninCallbackRoute(
     config.Handlers,
     config.DenoKV,
-    config.LoadEaCSvc,
+    config.ProcessSrcConnDetails,
   );
 
   const signoutRoute = establishSignoutRoute(config.Handlers);

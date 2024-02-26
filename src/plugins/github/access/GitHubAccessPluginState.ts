@@ -1,5 +1,7 @@
-import { EverythingAsCode } from "../../../eac/EverythingAsCode.ts";
-import { EverythingAsCodeSources } from "../../../eac/modules/sources/EverythingAsCodeSources.ts";
+import {
+  EverythingAsCode,
+  EverythingAsCodeSources,
+} from "../../../src.deps.ts";
 
 export type GitHubAccessPluginState = {
   EaC?: EverythingAsCode & EverythingAsCodeSources;

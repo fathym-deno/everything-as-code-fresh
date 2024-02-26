@@ -9,6 +9,7 @@ on:
       - integration
       - feature/**
       - hotfix/**
+      - main
 
 env:
   MainBranch: main
