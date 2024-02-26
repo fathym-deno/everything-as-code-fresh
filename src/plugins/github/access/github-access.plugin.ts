@@ -1,4 +1,4 @@
-import { FreshContext, Plugin, OAuthHelpers } from "../../../src.deps.ts";
+import { FreshContext, OAuthHelpers, Plugin } from "../../../src.deps.ts";
 import { EaCServiceClient } from "../../../eac/client/EaCServiceClient.ts";
 import { GitHubAccessPluginState } from "./GitHubAccessPluginState.ts";
 import { establishSigninCallbackRoute } from "./routes/signin/callback.ts";
