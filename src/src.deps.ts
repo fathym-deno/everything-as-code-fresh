@@ -9,7 +9,7 @@ export {
   type OpenAIChatInput,
 } from 'npm:@langchain/azure-openai';
 export { AzureAISearchQueryType } from 'npm:@langchain/community/vectorstores/azure_aisearch';
-export { BaseMessage } from 'npm:@langchain/core/messages';
-export { type BaseMessagePromptTemplateLike } from 'npm:@langchain/core/prompts';
+  export { BaseMessage } from 'npm:@langchain/core/messages';
+  export { type BaseMessagePromptTemplateLike } from 'npm:@langchain/core/prompts';
 
 export * from 'https://raw.githubusercontent.com/fathym-deno/deno_kv_oauth/main/mod.ts';
