@@ -1,0 +1,38 @@
+{
+  "lock": false,
+  "tasks": {
+    "build": "deno task build:fmt && deno task build:lint && deno task build:dev",
+    "build:dev": "deno run -A --unstable-kv dev.build.ts build",
+    "build:fmt": "deno fmt",
+    "build:lint": "deno lint",
+    "build:tailwind": "deno run -A --unstable-kv tailwind.config.ts build",
+    "check": "deno fmt --check && deno lint && deno check **/*.ts && deno check **/*.tsx",
+    "deploy": "deno task build && deno task test && ftm git",
+    "pkg": "npx rimraf _fresh && ftm git \"no fresh\"",
+    "preview": "deno run -A --unstable-kv main.ts",
+    "start": "deno run -A --unstable-kv --watch=static/,routes/,configs/,services/,src/ dev.ts",
+    "start:relay": "ngrok http 8000",
+    "test": "deno test -A --unstable-kv --allow-env .env tests/tests.ts --coverage=cov",
+    "update": "deno run -A -r https://fresh.deno.dev/update ."
+  },
+  "lint": {
+    "rules": {
+      "tags": ["fresh", "recommended"],
+      "exclude": [
+        "no-unused-vars",
+        "ban-unused-ignore",
+        "prefer-const",
+        "ban-types",
+        "require-await"
+      ]
+    }
+  },
+  "exclude": ["**/_fresh/*"],
+  "nodeModulesDir": false,
+  "imports": {},
+  "compilerOptions": { "jsx": "react-jsx", "jsxImportSource": "preact" },
+  "unusedImports": {
+    "__@fathym/msal": "../../fathym-deno/msal/mod.ts",
+    "@fathym/msal": "https://deno.land/x/msal@v0.0.24/mod.ts"
+  }
+}
