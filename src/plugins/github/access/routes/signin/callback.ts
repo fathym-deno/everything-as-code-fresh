@@ -16,6 +16,7 @@ export function establishSigninCallbackRoute<
   denoKv: Deno.Kv,
   processSrcConnDetails: (
     ctx: FreshContext<TState>,
+    srcConnLookup: string,
     srcConnDetails: EaCSourceConnectionDetails,
   ) => Promise<void>,
 ) {
@@ -99,7 +100,7 @@ export function establishSigninCallbackRoute<
 
       srcConnDetails.Token = accessToken;
 
-      await processSrcConnDetails(ctx, srcConnDetails);
+      await processSrcConnDetails(ctx, srcConnLookup, srcConnDetails);
 
       return response;
     },

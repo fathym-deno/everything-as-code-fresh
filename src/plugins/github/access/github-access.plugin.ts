@@ -16,6 +16,7 @@ export type GitHubAccessPluginConfig<TState extends GitHubAccessPluginState> = {
 
   ProcessSrcConnDetails: (
     ctx: FreshContext<TState>,
+    srcConnLookup: string,
     srcConnDetails: EaCSourceConnectionDetails,
   ) => Promise<void>;
 
